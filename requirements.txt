@@ -1,9 +1,6 @@
-charset-normalizer==3.3.2
 colorama==0.4.6
 datasets==3.0.0
 dill==0.3.8
-docstring_parser==0.16
-filelock==3.16.0
 frozenlist==1.4.1
 fsspec==2024.6.1
 huggingface-hub==0.24.7

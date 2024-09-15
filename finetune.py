@@ -20,7 +20,7 @@ training_config = {
     "logging_strategy": "steps",
     "lr_scheduler_type": "cosine",
     "num_train_epochs": 1,
-    "max_steps": 300,
+    "max_steps": 100,
     "output_dir": "./checkpoint_dir",
     "overwrite_output_dir": True,
     "per_device_eval_batch_size": 4,
