@@ -20,7 +20,7 @@ training_config = {
     "logging_strategy": "steps",
     "lr_scheduler_type": "cosine",
     "num_train_epochs": 1,
-    "max_steps": 200,
+    "max_steps": 300,
     "output_dir": "./checkpoint_dir",
     "overwrite_output_dir": True,
     "per_device_eval_batch_size": 4,
@@ -115,11 +115,12 @@ trainer = SFTTrainer(
     peft_config=peft_conf,
     train_dataset=processed_train_dataset,
     eval_dataset=processed_test_dataset,
-    max_seq_length=2048,
+    max_seq_length=1024,
     dataset_text_field="text",
     tokenizer=tokenizer,
     packing=True
 )
+
 train_result = trainer.train()
 metrics = train_result.metrics
 trainer.log_metrics("train", metrics)
