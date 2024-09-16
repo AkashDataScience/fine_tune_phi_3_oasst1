@@ -20,13 +20,13 @@ training_config = {
     "logging_strategy": "steps",
     "lr_scheduler_type": "cosine",
     "num_train_epochs": 1,
-    "max_steps": 100,
+    "max_steps": 60,
     "output_dir": "./checkpoint_dir",
     "overwrite_output_dir": True,
     "per_device_eval_batch_size": 4,
     "per_device_train_batch_size": 4,
     "remove_unused_columns": True,
-    "save_steps": 100,
+    "save_steps": 60,
     "save_total_limit": 1,
     "seed": 0,
     "gradient_checkpointing": True,
@@ -101,6 +101,7 @@ def apply_chat_template(
     return example
 
 train_dataset, test_dataset, column_names = get_train_test_data()
+test_dataset = test_dataset.select(range(0, int(0.20*len(test_dataset))))
 
 processed_train_dataset = train_dataset.map(
     apply_chat_template,
