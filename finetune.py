@@ -41,11 +41,19 @@ peft_config = {
     "lora_dropout": 0.05,
     "bias": "none",
     "task_type": "CAUSAL_LM",
-    "target_modules": ["o_proj", "qkv_proj"],
-    "modules_to_save": None,
+    "target_modules": ["o_proj", "qkv_proj"]
 }
+
+bnb_config = {
+    "load_in_4bit":True,
+    "bnb_4bit_quant_type":"nf4",
+    "bnb_4bit_compute_dtype":"bfloat16",
+    "bnb_4bit_use_double_quant":True,
+}
+
 train_conf = TrainingArguments(**training_config)
 peft_conf = LoraConfig(**peft_config)
+bnb_conf = BitsAndBytesConfig(**bnb_config)
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -69,11 +77,12 @@ logger.info(f"PEFT parameters {peft_conf}")
 
 checkpoint_path = "microsoft/Phi-3-mini-4k-instruct"
 model_kwargs = dict(
-    use_cache=False,
-    trust_remote_code=True,
-    attn_implementation='eager',  # loading the model with flash-attenstion support
     torch_dtype=torch.bfloat16,
-    device_map=None
+    trust_remote_code=True,
+    quantization_config=bnb_conf,
+    device_map={"": 0},
+    use_cache=False,
+    attn_implementation='eager', 
 )
 model = AutoModelForCausalLM.from_pretrained(checkpoint_path, **model_kwargs)
 tokenizer = AutoTokenizer.from_pretrained(checkpoint_path)
